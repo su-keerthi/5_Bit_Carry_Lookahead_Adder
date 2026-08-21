@@ -4,20 +4,6 @@ VLSI Design : NGSPICE · MAGIC · Verilog
 
 A 5-bit Carry Look-Ahead Adder designed and verified using static CMOS gate design, TSPC flip-flop synchronization, MAGIC layout, pre and post layout SPICE simulation, and Verilog implementation deployed on FPGA.
 
-## Table of Contents
-- [Overview](#overview)
-- [CLA Design Topology](#cla-design-topology)
-- [Transistor Sizing](#transistor-sizing)
-- [NGSpice Simulations](#ngspice-simulations)
-- [TSPC Flip-Flop Timing](#tspc-flip-flop-timing)
-- [Stick Diagrams](#stick-diagrams)
-- [Layout in MAGIC](#layout-in-magic)
-- [Post-Layout Simulations](#post-layout-simulations)
-- [Full Circuit: Pre- and Post-Layout](#full-circuit-pre--and-post-layout)
-- [Floor Plan](#floor-plan)
-- [Verilog Implementation](#verilog-implementation)
-- [FPGA Implementation](#fpga-implementation)
-- [Tools Used](#tools-used)
 
 ## Overview
 
@@ -95,7 +81,8 @@ Stick diagrams were drawn for every gate used in the design prior to layout, inc
 - 2–6 input NOR gates
 - 2–6 input NAND gates
 - 2-input XOR
-These map each gate's transistor-level schematic directly to poly/diffusion/metal placement, forming the basis for the MAGIC layout.
+
+These map each gate's transistor-level schematic directly to placement, forming the basis for the MAGIC layout.
 
 ## Layout in MAGIC
 
@@ -103,7 +90,7 @@ Full-custom layouts were completed in MAGIC for every gate in the design:
 - AND gates (2–6 input)
 - OR gates (2–6 input)
 - TSPC flip-flop
-- Final integrated adder ("Final Implementation")
+- Final integrated adder 
 
 ## Post-Layout Simulations
 
@@ -112,26 +99,11 @@ After layout, the extracted netlists (including parasitics) were re-simulated in
 - AND gates (2–6 input)
 - TSPC flip-flop output
 
-## Full Circuit: Pre- and Post-Layout
-
-The complete 5-bit CLA was simulated as a full circuit both **pre-layout** (schematic-level) and **post-layout** (extracted netlist), confirming that functional behavior is preserved once parasitics from the physical layout are included.
-
-## Floor Plan
-
-A full floor plan was drawn showing the placement and interconnection of all gates in the final adder, from the propagate/generate stage through carry computation to the final sum outputs.
-
 ## Verilog Implementation
 
 The 5-bit CLA was also implemented in Verilog and functionally verified. The GTKWave output confirms correct sum and carry-out behavior across the simulated input vectors.
 ## FPGA Implementation
 
-The Verilog design was deployed and verified on an FPGA development board, validating the design beyond simulation.## Tools Used
-
-| Tool     | Purpose                                                                 |
-|----------|--------------------------------------------------------------------------|
-| NGSPICE  | Transistor-level gate simulation, pre-/post-layout timing verification   |
-| MAGIC    | Full-custom VLSI layout of gates, flip-flops, and the final adder        |
-| Verilog  | RTL implementation and FPGA deployment                                   |
-
+The Verilog design was deployed and verified on an FPGA development board, validating the design beyond simulation.
 
 
