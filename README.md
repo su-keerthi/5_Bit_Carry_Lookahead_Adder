@@ -1,25 +1,31 @@
+# 5-Bit Carry Look-Ahead Adder
+
+VLSI Design : NGSPICE · MAGIC · Verilog
+
+A 5-bit Carry Look-Ahead Adder (CLA) designed and verified end-to-end: transistor-level static CMOS gate design, TSPC flip-flop synchronization, MAGIC layout, pre-/post-layout SPICE simulation, and Verilog implementation deployed on FPGA.
+
+## Table of Contents
+- [Overview](#overview)
+- [Why a Carry Look-Ahead Adder?](#why-a-carry-look-ahead-adder)
+- [CLA Design Topology](#cla-design-topology)
+- [Transistor Sizing](#transistor-sizing)
+- [NGSpice Simulations](#ngspice-simulations)
+- [TSPC Flip-Flop Timing](#tspc-flip-flop-timing)
+- [Stick Diagrams](#stick-diagrams)
+- [Layout in MAGIC](#layout-in-magic)
+- [Post-Layout Simulations](#post-layout-simulations)
+- [Full Circuit: Pre- and Post-Layout](#full-circuit-pre--and-post-layout)
+- [Floor Plan](#floor-plan)
+- [Verilog Implementation](#verilog-implementation)
+- [FPGA Implementation](#fpga-implementation)
+- [Tools Used](#tools-used)
 
 ## Overview
-In this project, a 5-bit Carry Lookahead Adder is first designed and simulated in ngspice, then implemented as a physical layout in MAGIC, followed by post-layout simulation to verify performance. The same adder is also implemented in Verilog for RTL-level functional verification.
 
-## Design Flow
+Addition is a fundamental operation in digital circuits. A ripple-carry adder computes each carry only after the previous stage resolves, making it inherently sequential and introducing significant propagation delay. This project implements a 5-bit **Carry Look-Ahead Adder**, which computes all carry bits directly from the input bits using **generate (G)** and **propagate (P)** signals, avoiding the ripple delay and enabling much faster computation.
 
-1. **Schematic Design (ngspice)**
-    - Used [NGSPICE/TSMC_180nm.txt] technology.
-   - Designed the individual gates at transistor level and verified functionality
-   - Used the verified gates to build the CLA.
+The design is carried through the full flow: transistor-level static CMOS gate design and simulation in **ngspice**, TSPC flip-flop synchronization at the input/output boundaries, full-custom layout in **MAGIC**, pre- and post-layout SPICE verification, and a final **Verilog** implementation deployed on FPGA.
 
-2. **Layout (MAGIC)**
-   - Converted the schematic into a physical layout using MAGIC.
-   - Extracted the layout netlist (including parasitics) and re-ran simulation in ngspice to verify post-layout behavior matched the schematic-level results.
+## Why a Carry Look-Ahead Adder?
 
-3. **RTL (Verilog)**
-   - Implemented the same 5-bit CLA behaviorally/structurally in Verilog.
-   - Verified functional correctness against expected outputs using a testbench.
-   
-## Tools Used
-
-- **ngspice** — circuit simulation
-- **MAGIC VLSI** — layout design and extraction
-- **Verilog** (+ [simulator used, e.g. Icarus Verilog / ModelSim]) — RTL design and testbench simulation
-
+For each bit position, two signals are defined:
