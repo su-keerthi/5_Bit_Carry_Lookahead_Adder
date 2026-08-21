@@ -1,5 +1,5 @@
 
-#Overview
+## Overview
 In this project, a 5-bit Carry Lookahead Adder is first designed and simulated in ngspice, then implemented as a physical layout in MAGIC, followed by post-layout simulation to verify performance. The same adder is also implemented in Verilog for RTL-level functional verification.
 
 ## Design Flow
