@@ -1,0 +1,124 @@
+.include TSMC_180nm.txt
+.include mine_fun.cir
+.param SUPPLY=1.8
+.param LAMBDA=0.09u
+.global gnd vdd
+
+
+x1 a0 b0 g0 vdd gnd and2
+x2 a0 b0 p0 vdd gnd xor
+
+x3 a1 b1 g1 vdd gnd and2
+x4 a1 b1 p1 vdd gnd xor
+
+x5 a2 b2 g2 vdd gnd and2
+x6 a2 b2 p2 vdd gnd xor
+
+x7 a3 b3 g3 vdd gnd and2
+x8 a3 b3 p3 vdd gnd xor
+
+x9 a4 b4 g4 vdd gnd and2
+x10 a4 b4 p4 vdd gnd xor
+
+** Finding carry **
+
+*c1
+x11 p0 c0 p0c0 vdd gnd and2
+x12 g0 p0c0 c1 vdd gnd or2
+
+*c2
+x13 p0 p1 c0 p1p0c0 vdd gnd and3
+x14 p1 g0 p1g0 vdd gnd and2
+x15 g1 p1g0 p1p0c0 c2 vdd gnd or3
+
+*c3
+x16 p2 g1 p2g1 vdd gnd and2
+x17 p2 p1 g0 p2p1g0 vdd gnd and3
+x18 p0 p1 p2 c0 p2p1p0c0 vdd gnd and4
+x19 g2 p2g1 p2p1g0 p2p1p0c0 c3 vdd gnd or4
+
+*c4
+x20 p3 g2 p3g2 vdd gnd and2
+x21 p3 p2 g1 p3p2g1 vdd gnd and3
+x22 p3 p2 p1 g0 p3p2p1g0 vdd gnd and4
+x23 p3 p2 p1 p0 c0 p3p2p1p0c0 vdd gnd and5
+x24 g3 p3g2 p3p2g1 p3p2p1g0 p3p2p1p0c0 c4 vdd gnd or5
+
+*c5
+x25 p4 g3 p4g3 vdd gnd and2
+x26 p4 p3 g2 p4p3g2 vdd gnd and3
+x27 p4 p3 p2 g1 p4p3p2g1 vdd gnd and4
+x28 p4 p3 p2 p1 g0 p4p3p2p1g0 vdd gnd and5
+x29 p4 p3 p2 p1 p0 c0 p4p3p2p1p0c0 vdd gnd and6
+x30 g4 p4g3 p4p3g2 p4p3p2g1 p4p3p2p1g0 p4p3p2p1p0c0 c5 vdd gnd or6
+
+
+* s0
+x31 p0 c0 s0 vdd gnd xor
+*s1
+x32 p1 c1 s1 vdd gnd xor
+*s2
+x33 p2 c2 s2 vdd gnd xor
+*s3
+x34 p3 c3 s3 vdd gnd xor
+*s4
+x35 p4 c4 s4 vdd gnd xor
+
+
+*input A
+x36 a0d a0 clk vdd gnd ff
+x37 a1d a1 clk vdd gnd ff
+x38 a2d a2 clk vdd gnd ff
+x39 a3d a3 clk vdd gnd ff
+x40 a4d a4 clk vdd gnd ff
+*input B
+x41 b0d b0 clk vdd gnd ff
+x42 b1d b1 clk vdd gnd ff
+x43 b2d b2 clk vdd gnd ff
+x44 b3d b3 clk vdd gnd ff
+x45 b4d b4 clk vdd gnd ff
+*input c0
+x46 c0d c0 clk vdd gnd ff
+
+
+*output s3s2s1s0
+x47 s0 s0q clk vdd gnd ff
+x48 s1 s1q clk vdd gnd ff
+x49 s2 s2q clk vdd gnd ff
+x50 s3 s3q clk vdd gnd ff
+x51 s4 s4q clk vdd gnd ff
+*output c5
+x52 c5 c5q clk vdd gnd ff
+
+vclk clk gnd pulse 0 1.8 0 1ns 1ns 10ns 20ns
+
+va0 a0d gnd pulse 0 1.8 0 1ns 1ns 13ns 26ns
+va1 a1d gnd pulse 0 1.8 0 1ns 1ns 13ns 26ns
+va2 a2d gnd pulse 0 1.8 0 1ns 1ns 17ns 34ns
+va3 a3d gnd pulse 0 1.8 0 1ns 1ns 17ns 34ns
+va4 a4d gnd pulse 0 1.8 0 1ns 1ns 13ns 26ns
+
+vb0 b0d gnd pulse 0 1.8 0 1ns 1ns 15ns 30ns
+vb1 b1d gnd pulse 0 1.8 0 1ns 1ns 15ns 30ns
+vb2 b2d gnd pulse 0 1.8 0 1ns 1ns 15ns 30ns
+vb3 b3d gnd pulse 0 1.8 0 1ns 1ns 15ns 30ns
+vb4 b4d gnd pulse 0 1.8 0 1ns 1ns 17ns 34ns
+
+vc0 c0d gnd 0
+
+.tran  0.01n 100ns
+.control
+run
+
+set color0=white
+set color1=blue
+set lwidth=4
+
+plot v(a0) v(b0)+2 v(c0)+4 v(s0)+6 v(c1)+8 v(clk) + 12
+plot v(a1) v(b1)+2 v(c1)+4 v(s1)+6 v(c2)+8 v(clk) + 12
+plot v(a2) v(b2)+2 v(c2)+4 v(s2)+6 v(c3)+8 v(clk) + 12
+plot v(a3) v(b3)+2 v(c3)+4 v(s3)+6 v(c4)+8 v(clk) + 12
+plot v(a4) v(b4)+2 v(c4)+4 v(s4)+6 v(c5)+8 v(clk) + 12
+
+.endc
+

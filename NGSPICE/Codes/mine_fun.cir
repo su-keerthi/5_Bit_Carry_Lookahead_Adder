@@ -1,0 +1,230 @@
+.include TSMC_180nm.txt
+.param LAMBDA=0.09u
+.global gnd vdd
+
+.subckt nmos d g s b W='N'
+.param width_N={W}
+M1 d g s b CMOSN W={width_N} L={2*LAMBDA}
++ AS={5*width_N*LAMBDA} PS={10*LAMBDA+2*width_N}
++ AD={5*width_N*LAMBDA} PD={10*LAMBDA+2*width_N}
+.ends nmos
+
+.subckt pmos d g s b W='P'
+.param width_P={W}
+M1 d g s b CMOSP W={width_P} L={2*LAMBDA}
++ AS={5*width_P*LAMBDA} PS={10*LAMBDA+2*width_P}
++ AD={5*width_P*LAMBDA} PD={10*LAMBDA+2*width_P}
+.ends pmos
+
+* inverter
+.subckt inv y x vdd gnd 
+XM1 y x vdd vdd pmos W='20*LAMBDA'  
+XM2 y x gnd gnd nmos W='10*LAMBDA'
+.ends inv
+
+.subckt or2 a b out vdd gnd
+XM1 x a vdd vdd pmos W='2*20*LAMBDA' 
+XM2 nout b x vdd pmos W='2*20*LAMBDA' 
+XM3 nout a gnd gnd nmos W='10*LAMBDA'
+XM4 nout b gnd gnd nmos W='10*LAMBDA'
+*inv
+XI out nout vdd gnd inv
+.ends or2
+
+.subckt or3 a b c out vdd gnd
+
+XM1 x a vdd vdd pmos W='3*20*LAMBDA' 
+XM2 y b x vdd pmos W='3*20*LAMBDA' 
+XM3 nout c y vdd pmos W='3*20*LAMBDA' 
+XM4 nout a gnd gnd nmos W='10*LAMBDA'
+XM5 nout b gnd gnd nmos W='10*LAMBDA'
+XM6 nout c gnd gnd nmos W='10*LAMBDA'
+*inv
+XI1 out nout vdd gnd inv
+.ends or3
+
+.subckt or4 a b c d out vdd gnd
+
+XM1 x a vdd vdd pmos W='4*20*LAMBDA' 
+XM2 y b x vdd pmos W='4*20*LAMBDA'
+XM3 z c y vdd pmos W='4*20*LAMBDA'
+XM4 nout d z vdd pmos W='4*20*LAMBDA'
+
+XM5 nout a gnd gnd nmos W='10*LAMBDA'
+XM6 nout b gnd gnd nmos W='10*LAMBDA'
+XM7 nout c gnd gnd nmos W='10*LAMBDA'
+XM8 nout d gnd gnd nmos W='10*LAMBDA'
+
+XI1 out nout vdd gnd inv
+.ends or4
+
+.subckt or5 a b c d e out vdd gnd
+
+XM1 w a vdd vdd pmos W='5*20*LAMBDA'
+XM2 x b w vdd pmos W='5*20*LAMBDA'
+XM3 y c x vdd pmos W='5*20*LAMBDA' 
+XM4 z d y vdd pmos W='5*20*LAMBDA' 
+XM5 nout e z vdd pmos W='5*20*LAMBDA' 
+
+XM6 nout a gnd gnd nmos W='10*LAMBDA'
+XM7 nout b gnd gnd nmos W='10*LAMBDA'
+XM8 nout c gnd gnd nmos W='10*LAMBDA'
+XM9 nout d gnd gnd nmos W='10*LAMBDA'
+XM10 nout e gnd gnd nmos W='10*LAMBDA'
+
+*inv
+XI1 out nout vdd gnd inv
+.ends or5
+
+.subckt or6 a b c d e f out vdd gnd
+
+XM1 u a vdd vdd pmos W='6*20*LAMBDA'
+XM2 v b u vdd pmos W='6*20*LAMBDA'
+XM3 w c v vdd pmos W='6*20*LAMBDA'
+XM4 x d w vdd pmos W='6*20*LAMBDA'
+XM5 y e x vdd pmos W='6*20*LAMBDA'
+XM6 nout f y vdd pmos W='6*20*LAMBDA'
+
+XM7  nout a gnd gnd nmos W='10*LAMBDA'
+XM8  nout b gnd gnd nmos W='10*LAMBDA'
+XM9  nout c gnd gnd nmos W='10*LAMBDA'
+XM10 nout d gnd gnd nmos W='10*LAMBDA'
+XM11 nout e gnd gnd nmos W='10*LAMBDA'
+XM12 nout f gnd gnd nmos W='10*LAMBDA'
+
+*inv
+XI1 out nout vdd gnd inv
+.ends or6
+
+
+.include TSMC_180nm.txt
+.param SUPPLY=1.8
+.param LAMBDA=0.09u
+
+vdd vdd gnd DC 1.8
+
+
+* 2 input and
+.subckt and2 a b out vdd gnd     
+XM1 nout a vdd vdd pmos W='20*LAMBDA' 
+XM2 nout b vdd vdd pmos W='20*LAMBDA'
+XM3 nout a x gnd nmos W='20*LAMBDA'
+XM4  x b gnd gnd nmos W='20*LAMBDA'
+*inv
+XI1 out nout vdd gnd inv
+.ends and2
+
+* 3 input and 
+.subckt and3 a b c out vdd gnd
+   
+XM1 nout a vdd vdd pmos W= '20*LAMBDA' 
+XM2 nout b vdd vdd pmos W= '20*LAMBDA' 
+XM3 nout c vdd vdd pmos W= '20*LAMBDA' 
+XM4 nout a x gnd nmos W='30*LAMBDA'  
+XM5  x b y gnd nmos W= '30*LAMBDA' 
+XM6 y c gnd gnd nmos W='30*LAMBDA' 
+*inv
+XI1 out nout vdd gnd inv
+.ends and3
+
+
+.subckt and4 a b c d out vdd gnd
+
+XM1 nout a vdd vdd pmos W= '20*LAMBDA'
+XM2 nout b vdd vdd pmos W= '20*LAMBDA'
+XM3 nout c vdd vdd pmos W= '20*LAMBDA' 
+XM4 nout d vdd vdd pmos W= '20*LAMBDA'
+XM5 nout a x gnd nmos W= '40*LAMBDA'
+XM6  x b y gnd nmos W= '40*LAMBDA'
+XM7 y c z gnd nmos W= '40*LAMBDA'
+XM8 z d gnd gnd nmos W='40*LAMBDA'
+
+XI1 out nout vdd gnd inv
+.ends and4
+
+.subckt and5 a b c d e out vdd gnd
+
+XM1 nout a vdd vdd pmos W= '20*LAMBDA'
+XM2 nout b vdd vdd pmos W= '20*LAMBDA'
+XM3 nout c vdd vdd pmos W= '20*LAMBDA' 
+XM4 nout d vdd vdd pmos W= '20*LAMBDA'
+XM5 nout e vdd vdd pmos W= '20*LAMBDA'
+XM6 nout a w gnd nmos W= '50*LAMBDA'
+XM7  w b x gnd nmos W= '50*LAMBDA'
+XM8 x c y gnd nmos W= '50*LAMBDA'
+XM9 y d z gnd nmos W='50*LAMBDA'
+XM10 z e gnd gnd nmos W='50*LAMBDA'
+
+*inv
+XI1 out nout vdd gnd inv
+
+.ends and5
+
+.subckt and6 a b c d e f out vdd gnd
+
+XM1 nout a vdd vdd pmos W= '20*LAMBDA'
+XM2 nout b vdd vdd pmos W= '20*LAMBDA'
+XM3 nout c vdd vdd pmos W= '20*LAMBDA' 
+XM4 nout d vdd vdd pmos W= '20*LAMBDA'
+XM5 nout e vdd vdd pmos W= '20*LAMBDA'
+XM6 nout f vdd vdd pmos W= '20*LAMBDA'
+
+XM7 nout a w gnd nmos W= '60*LAMBDA'
+XM8  w b x gnd nmos W= '60*LAMBDA'
+XM9 x c y gnd nmos W= '60*LAMBDA'
+XM10 y d z gnd nmos W='60*LAMBDA'
+XM11 z e u gnd nmos W='60*LAMBDA'
+XM12 u f gnd gnd nmos W='60*LAMBDA'
+
+XI1 out nout vdd gnd inv
+.ends and6
+
+.subckt xor a b out vdd gnd
+.param width_P = {20*LAMBDA}
+.param width_N = {10*LAMBDA}
+
+M13 abar a vdd vdd CMOSP W={width_P} L={2*LAMBDA}
++ AS={5*width_P*LAMBDA} PS={10*LAMBDA+2*width_P} AD={5*width_P*LAMBDA} PD={10*LAMBDA+2*width_P}
+M14 abar a gnd gnd CMOSN W={width_N} L={2*LAMBDA}
++ AS={5*width_N*LAMBDA} PS={10*LAMBDA+2*width_N} AD={5*width_N*LAMBDA} PD={10*LAMBDA+2*width_N}
+
+M15 bbar b vdd vdd CMOSP W={width_P} L={2*LAMBDA}
++ AS={5*width_P*LAMBDA} PS={10*LAMBDA+2*width_P} AD={5*width_P*LAMBDA} PD={10*LAMBDA+2*width_P}
+M16 bbar b gnd gnd CMOSN W={width_N} L={2*LAMBDA}
++ AS={5*width_N*LAMBDA} PS={10*LAMBDA+2*width_N} AD={5*width_N*LAMBDA} PD={10*LAMBDA+2*width_N}
+
+* 2input XOR gate with Wn = 2*width_N and Wp = 2*width_P *
+M1 p a vdd vdd CMOSP W={2*width_P} L={2*LAMBDA} 
++ AS={5*2*width_P*LAMBDA} PS={10*LAMBDA+2*2*width_P} AD={5*2*width_P*LAMBDA} PD={10*LAMBDA+2*2*width_P}
+M2 out bbar p vdd CMOSP W={2*width_P} L={2*LAMBDA} 
++ AS={5*2*width_P*LAMBDA} PS={10*LAMBDA+2*2*width_P} AD={5*2*width_P*LAMBDA} PD={10*LAMBDA+2*2*width_P}
+M3 q abar vdd vdd CMOSP W={2*width_P} L={2*LAMBDA} 
++ AS={5*2*width_P*LAMBDA} PS={10*LAMBDA+2*2*width_P} AD={5*2*width_P*LAMBDA} PD={10*LAMBDA+2*2*width_P}
+M4 out b q vdd CMOSP W={2*width_P} L={2*LAMBDA} 
++ AS={5*2*width_P*LAMBDA} PS={10*LAMBDA+2*2*width_P} AD={5*2*width_P*LAMBDA} PD={10*LAMBDA+2*2*width_P}
+
+M5 out a r gnd CMOSN W={2*width_N} L={2*LAMBDA}
++ AS={5*2*width_N*LAMBDA} PS={10*LAMBDA+2*2*width_N} AD={5*2*width_N*LAMBDA} PD={10*LAMBDA+2*2*width_N}
+M6 r b gnd gnd CMOSN W={2*width_N} L={2*LAMBDA}
++ AS={5*2*width_N*LAMBDA} PS={10*LAMBDA+2*2*width_N} AD={5*2*width_N*LAMBDA} PD={10*LAMBDA+2*2*width_N}
+M7 out abar s gnd CMOSN W={2*width_N} L={2*LAMBDA}
++ AS={5*2*width_N*LAMBDA} PS={10*LAMBDA+2*2*width_N} AD={5*2*width_N*LAMBDA} PD={10*LAMBDA+2*2*width_N}
+M8 s bbar gnd gnd CMOSN W={2*width_N} L={2*LAMBDA}
++ AS={5*2*width_N*LAMBDA} PS={10*LAMBDA+2*2*width_N} AD={5*2*width_N*LAMBDA} PD={10*LAMBDA+2*2*width_N}
+.ends xor
+
+.subckt ff d q clk vdd gnd
+
+XM1 x d gnd gnd nmos W='10*LAMBDA'
+XM2 x clk a vdd pmos W='20*LAMBDA'
+XM3 a d vdd vdd pmos W='20*LAMBDA'
+XM4 b clk gnd gnd nmos W='10*LAMBDA'
+XM5 y x b gnd nmos W='10*LAMBDA'
+XM6 y clk vdd vdd pmos W='20*LAMBDA'
+XM7 c y gnd gnd nmos W='10*LAMBDA'
+XM8 qbar clk c gnd nmos W='10*LAMBDA'
+XM9 qbar y vdd vdd pmos W='20*LAMBDA'
+XM10 q qbar vdd vdd pmos W='20*LAMBDA'
+XM11 q qbar gnd gnd nmos W='10*LAMBDA'
+
+.ends ff

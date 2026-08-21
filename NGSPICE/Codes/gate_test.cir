@@ -1,0 +1,61 @@
+.include TSMC_180nm.txt
+.include mine_fun.cir
+.param SUPPLY=1.8
+.param LAMBDA=0.09u
+.global gnd vdd
+
+va a gnd pulse 0 1.8 0 1ns 1ns 5ns 10ns
+vb b gnd pulse 0 1.8 0 1ns 1ns 15ns 30ns
+vc c gnd pulse 0 1.8 0 1ns 1ns 10ns 20ns
+vd d gnd pulse 0 1.8 0 1ns 1ns 30ns 60ns
+ve e gnd pulse 0 1.8 0 1ns 1ns 25ns 50ns
+vf f gnd pulse 0 1.8 0 1ns 1ns 25ns 50ns
+
+Vclk clk gnd pulse(0 1.8 0n 0 0 20n 40n)
+V2 d_in gnd pulse(0 1.8 0n 0 0 15n 30n)
+x1 d_in q clk vdd gnd ff
+
+Xinv abar a vdd gnd inv
+
+Xand2 a b n_and2 vdd gnd and2
+Xand3 a b c n_and3 vdd gnd and3
+Xand4 a b c d n_and4 vdd gnd and4
+Xand5 a b c d e n_and5 vdd gnd and5
+Xand6 a b c d e f n_and6 vdd gnd and6
+
+Xor2 a b n_or2 vdd gnd or2
+Xor3 a b c n_or3 vdd gnd or3
+Xor4 a b c d n_or4 vdd gnd or4
+Xor5 a b c d e n_or5 vdd gnd or5
+Xor6 a b c d e f n_or6 vdd gnd or6
+
+
+Xxor a b xor_out vdd gnd xor
+
+.tran 0.1n 100ns
+.control
+run
+set color0=white
+set color1=blue
+set lwidth=4
+
+plot v(a) v(abar) + 2
+
+plot v(a) v(b) + 2 v(n_and2) + 4
+plot v(a) v(b) + 2 v(c) + 4 v(n_and3) + 6
+plot v(a) v(b) + 2 v(c) + 4 v(d) + 6 v(n_and4) + 8
+plot v(a) v(b) + 2 v(c) + 4 v(d) + 6 v(e) + 8 (n_and5) + 10
+plot v(a) v(b) + 2 v(c) + 4 v(d) + 6 v(e) + 8 v(f) + 10 (n_and6) + 12
+
+plot v(a) v(b) + 2 v(n_or2) + 4
+plot v(a) v(b) + 2 v(c) + 4 v(n_or3) + 6
+plot v(a) v(b) + 2 v(c) + 4 v(d) + 6 v(n_or4) + 8
+plot v(a) v(b) + 2 v(c) + 4 v(d) + 6 v(e) + 8 (n_or5) + 10
+plot v(a) v(b) + 2 v(c) + 4 v(d) + 6 v(e) + 8 v(f) + 10 (n_or6) + 12
+
+plot v(clk) v(d_in)+2  v(q)+4
+
+plot v(a) v(b)+2 v(xor_out)+4
+
+.title Sukeerthi-2024102074
+.endc
