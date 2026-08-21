@@ -2,7 +2,7 @@
 
 VLSI Design : NGSPICE · MAGIC · Verilog
 
-A 5-bit Carry Look-Ahead Adder (CLA) designed and verified end-to-end: transistor-level static CMOS gate design, TSPC flip-flop synchronization, MAGIC layout, pre-/post-layout SPICE simulation, and Verilog implementation deployed on FPGA.
+A 5-bit Carry Look-Ahead Adder designed and verified using static CMOS gate design, TSPC flip-flop synchronization, MAGIC layout, pre and post layout SPICE simulation, and Verilog implementation deployed on FPGA.
 
 ## Table of Contents
 - [Overview](#overview)
@@ -24,8 +24,7 @@ A 5-bit Carry Look-Ahead Adder (CLA) designed and verified end-to-end: transisto
 
 Addition is a fundamental operation in digital circuits. A ripple-carry adder computes each carry only after the previous stage resolves, making it inherently sequential and introducing significant propagation delay. This project implements a 5-bit **Carry Look-Ahead Adder**, which computes all carry bits directly from the input bits using **generate (G)** and **propagate (P)** signals, avoiding the ripple delay and enabling much faster computation.
 
-The design is carried through the full flow: transistor-level static CMOS gate design and simulation in **ngspice**, TSPC flip-flop synchronization at the input/output boundaries, full-custom layout in **MAGIC**, pre- and post-layout SPICE verification, and a final **Verilog** implementation deployed on FPGA.
+The design is carried through the full flow: transistor-level static CMOS gate design and simulation in **ngspice**, TSPC flip-flop synchronization at the input/output boundaries, full-custom layout in **MAGIC**, pre- and post-layout SPICE verification, and a final **Verilog** implementation
 
-## Why a Carry Look-Ahead Adder?
-
-For each bit position, two signals are defined:
+Propagate: Pi = Ai ⊕ Bi
+Generate: Gi = Ai · Bi
